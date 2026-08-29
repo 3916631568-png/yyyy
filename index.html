@@ -1,39 +1,128 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>页面跳转中</title>
-<style>
-body{
-    font-family:system-ui;
-    max-width:600px;
-    margin:80px auto;
-    padding:20px;
-    text-align:center;
-}
-.box{
-    border:1px solid #ddd;
-    padding:30px;
-    border-radius:12px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>观赏站点</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #1a1a22;
+            color: #ffffff;
+            padding: 20px 15px;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+        /* 封面图片 */
+        .cover-box {
+            width: 100%;
+            border-radius:14px;
+            overflow:hidden;
+            margin-bottom:24px;
+        }
+        .cover-box img {
+            width:100%;
+            display:block;
+            object-fit:cover;
+        }
+        /* 头像+昵称区域 */
+        .user-info{
+            display:flex;
+            align-items:center;
+            gap:14px;
+            margin-bottom:30px;
+        }
+        .avatar{
+            width:64px;
+            height:64px;
+            border-radius:50%;
+            overflow:hidden;
+            border:2px solid #4488ff;
+        }
+        .avatar img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+        }
+        .username{
+            font-size:19px;
+            font-weight:bold;
+        }
+        /* 4个卡片容器 */
+        .card-wrap{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:16px;
+            margin-bottom:40px;
+        }
+        .card-item{
+            background:#272733;
+            border-radius:12px;
+            padding:22px 14px;
+            text-align:center;
+            border:1px solid #383848;
+        }
+        .card-item a{
+            color:#fff;
+            text-decoration:none;
+            font-size:16px;
+            display:block;
+        }
+        .card-item:hover{
+            border-color:#4488ff;
+        }
+        /* 底部提示文字 */
+        .footer-tip{
+            margin-top:50px;
+            text-align:center;
+            font-size:14px;
+            color:#bbbbcc;
+            line-height:2.2;
+        }
+    </style>
 </head>
 <body>
-<div class="box">
-    <h2>📄文档提示</h2>
-    <p>如遇线路无法打开，长按3秒复制下方链接，使用浏览器打开即可观赏，⬇️⬇️⬇️⬇️⬇️</p>
-    <p>⏳2秒后将自动跳转目标页面……</p>
-</div>
+    <!-- ==========【自定义修改区域】在这里改内容 ========== -->
+    <!-- 1.封面图片地址，替换引号内链接 -->
+    <div class="cover-box">
+        <img src="C:\Users\Administrator\Desktop" alt="封面">
+    </div>
 
-<script>
-// =========在这里修改你的目标跳转地址==========
-const targetUrl = "http://yibang.shenzhenbenwo.com/?710691,2571,h2";
+    <!-- 2.头像 + 昵称 -->
+    <div class="user-info">
+        <div class="avatar">
+            <img src="https://这里替换成你的头像图片链接" alt="头像">
+        </div>
+        <div class="username">自定义修改这里的名字</div>
+    </div>
 
-// 2000毫秒 = 2秒后跳转
-setTimeout(function(){
-    window.location.href = targetUrl;
-},2000);
-</script>
+    <!-- 3.四张跳转卡片，修改文字和href跳转地址 -->
+    <div class="card-wrap">
+        <div class="card-item">
+            <a href="https://卡片1跳转地址" target="_blank">卡片通道1<br>点此已购</a>
+        </div>
+        <div class="card-item">
+            <a href="https://卡片2跳转地址" target="_blank">卡片通道2<br>点此已购</a>
+        </div>
+        <div class="card-item">
+            <a href="https://卡片3跳转地址" target="_blank">卡片通道3<br>点此已购</a>
+        </div>
+        <div class="card-item">
+            <a href="https://卡片4跳转地址" target="_blank">卡片通道4<br>点此已购</a>
+        </div>
+    </div>
+
+    <!-- 底部固定提示文案，不用改 -->
+    <div class="footer-tip">
+        保存本站永久观赏<br>
+        如遇打不开请点击其他卡片通道观赏<br>
+        各卡片之间不互通，在哪个卡片购买，就点哪个卡片已购，即可继续观赏！
+    </div>
+
 </body>
 </html>
