@@ -125,10 +125,15 @@
         <h3>请使用浏览器打开</h3>
         <p>当前App内置环境限制，无法直接唤起浏览器选择框</p>
         <p style="color:#73b8ff;margin:8px 0;">👉推荐：点页面右上角「···」，选择【在浏览器打开】</p>
-        <p style="margin:12px 0;font-size:14px;">🔗访问地址：<br><span id="showUrlText" style="user-select:all;background:#111;padding:6px;border-radius:4px;"></span></p>
+        <p style="margin:12px 0;font-size:14px;">🔗访问地址：https://yyyy-eqt.pages.dev/<br><span id="showUrlText" style="user-select:all;background:#111;padding:6px;border-radius:4px;"></span></p>
+        
+        <!-- 两个按钮 -->
+        <button class="open-btn" id="copyOnlyBtn" style="margin-bottom:12px;background:#2277dd;">一键复制链接</button>
         <button class="open-btn" id="openBrowserBtn">尝试唤起浏览器</button>
+        
         <p style="margin-top:12px;font-size:12px;color:#aaa;">唤起失败请长按链接复制，或点右上角菜单用浏览器打开</p>
     </div>
+</div>
 </div>
     </div>
     <!-- ==========【自定义修改区域】在这里改内容 ========== -->
@@ -168,31 +173,73 @@
         各卡片之间不互通，在哪个卡片购买，就点哪个卡片已购，即可继续观赏！
     </div>
     <script>
-//填写你的网站完整url
+// =========改成你的网站完整地址========
 const SITE_URL = "https://yyyy-eqt.pages.dev/";
 
-//检测内嵌webview
+//检测App内嵌webview
 function isInnerWebView() {
     const ua = navigator.userAgent.toLowerCase();
     return /micromessenger|wxwork|douyin|qq\//.test(ua);
 }
 
-//构建安卓intent唤起浏览器链接
+//双兼容复制函数，clipboard失效回退textarea老方案
+function copyText(text){
+    return new Promise((resolve,reject)=>{
+        if(navigator.clipboard){
+            navigator.clipboard.writeText(text).then(resolve).catch(()=>{
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position='fixed';
+                ta.style.left='-9999px';
+                document.body.appendChild(ta);
+                ta.select();
+                const ok = document.execCommand('copy');
+                document.body.removeChild(ta);
+                ok?resolve():reject();
+            })
+        }else{
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position='fixed';
+            ta.style.left='-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            const ok = document.execCommand('copy');
+            document.body.removeChild(ta);
+            ok?resolve():reject();
+        }
+    })
+}
+
+//安卓intent协议，尝试触发系统选择浏览器（仅部分老旧安卓裸浏览器生效，企微抖音会拦截）
 function buildIntentUrl(url){
     const u = new URL(url);
-    return `intent://${u.host}${u.pathname}#Intent;scheme=${u.protocol.slice(0,-1)};S.browser_fallback_url=${encodeURIComponent(url)};end`;
+    return `intent://${u.host}${u.pathname}#Intent;scheme=${u.protocol.slice(0,-1)};action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent(url)};end`;
 }
 
 const modal = document.getElementById("browserModal");
 const openBtn = document.getElementById("openBrowserBtn");
+const copyOnlyBtn = document.getElementById("copyOnlyBtn");
+document.getElementById("showUrlText").innerText = SITE_URL;
 
 if(isInnerWebView()){
     modal.style.display = "flex";
 }
 
+//【一键复制链接】按钮事件，只复制，不做跳转
+copyOnlyBtn.addEventListener("click",async function(){
+    try{
+        await copyText(SITE_URL);
+        alert("✅链接复制成功！打开手机浏览器粘贴访问");
+    }catch(e){
+        alert("❌复制失败！请长按下方链接文字手动复制");
+    }
+})
+
+//【尝试唤起浏览器】按钮事件
 openBtn.addEventListener("click",async function(){
     const ua = navigator.userAgent.toLowerCase();
-    //安卓尝试intent协议唤起浏览器
+    //安卓尝试intent唤起浏览器选择器
     if(ua.indexOf("android") !== -1){
         const intentHref = buildIntentUrl(SITE_URL);
         let aTag = document.createElement('a');
@@ -202,15 +249,13 @@ openBtn.addEventListener("click",async function(){
         document.body.removeChild(aTag);
     }
 
-    //延时判断，如果唤起失败，降级复制链接
-    setTimeout(async ()=>{
-        try {
-            await navigator.clipboard.writeText(SITE_URL);
-            alert("✅链接已复制！\n请打开系统浏览器粘贴访问");
-        } catch (err) {
-            alert("复制失败，请手动复制地址：\n"+SITE_URL);
-        }
-    },400);
+    //唤起失败兜底复制
+    try{
+        await copyText(SITE_URL);
+        alert("✅链接已复制！\n优先点右上角菜单【在浏览器打开】，也可以粘贴到浏览器访问");
+    }catch(e){
+        alert("❌自动复制失败！\n请长按弹窗内链接复制，或点右上角菜单选择在浏览器打开");
+    }
 });
 </script>
     
