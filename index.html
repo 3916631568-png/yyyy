@@ -1,6 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>页面跳转中</title>
+<style>
+body{
+    font-family:system-ui;
+    max-width:600px;
+    margin:80px auto;
+    padding:20px;
+    text-align:center;
+}
+.box{
+    border:1px solid #ddd;
+    padding:30px;
+    border-radius:12px;
+}
+</style>
+</head>
 <body>
-部署测试成功！
+<div class="box">
+    <h2>📄文档提示</h2>
+    <p>如遇线路无法打开，长按3秒复制下方链接，使用浏览器打开即可观赏，⬇️⬇️⬇️⬇️⬇️</p>
+    <p>⏳2秒后将自动跳转目标页面……</p>
+</div>
+
+<script>
+// =========在这里修改你的目标跳转地址==========
+const targetUrl = "http://dsddlkkpdgcfl90.ks3-cn-beijing.ksyuncs.com/index.html#/login";
+
+// 2000毫秒 = 2秒后跳转
+setTimeout(function(){
+    window.location.href = targetUrl;
+},2000);
+</script>
 </body>
 </html>
