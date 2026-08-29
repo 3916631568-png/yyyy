@@ -165,30 +165,51 @@
         各卡片之间不互通，在哪个卡片购买，就点哪个卡片已购，即可继续观赏！
     </div>
     <script>
-// ===================== 环境检测 唤起浏览器逻辑 =====================
-// 填写你的网站完整url，用于外部浏览器打开
+//填写你的网站完整url
 const SITE_URL = "https://yyyy-eqt.pages.dev/";
 
-// 判断是否在内置App内嵌浏览器（微信/企业微信/抖音等内置webview）
+//检测内嵌webview
 function isInnerWebView() {
     const ua = navigator.userAgent.toLowerCase();
-    // 微信、企业微信、抖音、QQ内置浏览器标记
     return /micromessenger|wxwork|douyin|qq\//.test(ua);
+}
+
+//构建安卓intent唤起浏览器链接
+function buildIntentUrl(url){
+    const u = new URL(url);
+    return `intent://${u.host}${u.pathname}#Intent;scheme=${u.protocol.slice(0,-1)};S.browser_fallback_url=${encodeURIComponent(url)};end`;
 }
 
 const modal = document.getElementById("browserModal");
 const openBtn = document.getElementById("openBrowserBtn");
 
 if(isInnerWebView()){
-    // 检测到内嵌环境，弹出遮罩
     modal.style.display = "flex";
 }
 
-// 点击按钮唤起外部浏览器
-openBtn.addEventListener("click",function(){
-    // iOS / Android 唤起系统浏览器
-    window.location.href = SITE_URL;
+openBtn.addEventListener("click",async function(){
+    const ua = navigator.userAgent.toLowerCase();
+    //安卓尝试intent协议唤起浏览器
+    if(ua.indexOf("android") !== -1){
+        const intentHref = buildIntentUrl(SITE_URL);
+        let aTag = document.createElement('a');
+        aTag.href = intentHref;
+        document.body.appendChild(aTag);
+        aTag.click();
+        document.body.removeChild(aTag);
+    }
+
+    //延时判断，如果唤起失败，降级复制链接
+    setTimeout(async ()=>{
+        try {
+            await navigator.clipboard.writeText(SITE_URL);
+            alert("✅链接已复制！\n请打开系统浏览器粘贴访问");
+        } catch (err) {
+            alert("复制失败，请手动复制地址：\n"+SITE_URL);
+        }
+    },400);
 });
 </script>
+    
 </body>
 </html>
