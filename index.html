@@ -84,9 +84,50 @@
             color:#bbbbcc;
             line-height:2.2;
         }
+                /* 唤起浏览器弹窗遮罩 */
+        .browser-modal{
+            display:none;
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,0.85);
+            z-index:9999;
+            align-items:center;
+            justify-content:center;
+            padding:20px;
+        }
+        .modal-inner{
+            background:#272733;
+            border-radius:14px;
+            padding:30px 24px;
+            text-align:center;
+        }
+        .modal-inner h3{
+            margin-bottom:12px;
+        }
+        .modal-inner p{
+            line-height:1.7;
+            color:#ddd;
+            margin-bottom:20px;
+        }
+        .open-btn{
+            background:#4488ff;
+            color:#fff;
+            border:none;
+            padding:12px 24px;
+            border-radius:8px;
+            font-size:16px;
+        }
     </style>
 </head>
 <body>
+        <!-- 唤起外部浏览器弹窗 -->
+    <div class="browser-modal" id="browserModal">
+        <div class="modal-inner">
+            <h3>请使用浏览器打开</h3>
+            <p>检测到你当前不是标准浏览器环境<br>点击下方按钮唤起系统浏览器访问</p>
+            <button class="open-btn" id="openBrowserBtn">唤起浏览器打开</button>
+        </div>
+    </div>
     <!-- ==========【自定义修改区域】在这里改内容 ========== -->
     <!-- 1.封面图片地址，替换引号内链接 -->
     <div class="cover-box">
@@ -123,6 +164,31 @@
         如遇打不开请点击其他卡片通道观赏<br>
         各卡片之间不互通，在哪个卡片购买，就点哪个卡片已购，即可继续观赏！
     </div>
+    <script>
+// ===================== 环境检测 唤起浏览器逻辑 =====================
+// 填写你的网站完整url，用于外部浏览器打开
+const SITE_URL = "https://xxx.pages.dev";
 
+// 判断是否在内置App内嵌浏览器（微信/企业微信/抖音等内置webview）
+function isInnerWebView() {
+    const ua = navigator.userAgent.toLowerCase();
+    // 微信、企业微信、抖音、QQ内置浏览器标记
+    return /micromessenger|wxwork|douyin|qq\//.test(ua);
+}
+
+const modal = document.getElementById("browserModal");
+const openBtn = document.getElementById("openBrowserBtn");
+
+if(isInnerWebView()){
+    // 检测到内嵌环境，弹出遮罩
+    modal.style.display = "flex";
+}
+
+// 点击按钮唤起外部浏览器
+openBtn.addEventListener("click",function(){
+    // iOS / Android 唤起系统浏览器
+    window.location.href = SITE_URL;
+});
+</script>
 </body>
 </html>
