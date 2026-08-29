@@ -120,18 +120,32 @@
     </style>
 </head>
 <body>
-    <div class="browser-modal" id="browserModal">
+    <!--主检测弹窗-->
+<div class="browser-modal" id="browserModal">
     <div class="modal-inner">
         <h3>请使用浏览器打开</h3>
         <p>当前App内置环境限制，无法直接唤起浏览器选择框</p>
         <p style="color:#73b8ff;margin:8px 0;">👉推荐：点页面右上角「···」，选择【在浏览器打开】</p>
         <p style="margin:12px 0;font-size:14px;">🔗访问地址：<br><span id="showUrlText" style="user-select:all;background:#111;padding:6px;border-radius:4px;"></span></p>
-        
-        <!-- 两个按钮 -->
+
         <button class="open-btn" id="copyOnlyBtn" style="margin-bottom:12px;background:#2277dd;">一键复制链接</button>
         <button class="open-btn" id="openBrowserBtn">尝试唤起浏览器</button>
-        
+
         <p style="margin-top:12px;font-size:12px;color:#aaa;">唤起失败请长按链接复制，或点右上角菜单用浏览器打开</p>
+    </div>
+</div>
+
+<!--复制失败自定义弹窗（替换系统alert，关闭网页改为一键复制）-->
+<div class="fail-alert-modal" id="failAlertModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:10000; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:#ffffff; color:#333333; border-radius:12px; padding:24px; text-align:center; max-width:320px;">
+        <div style="color:#ff4d4f; font-size:18px; font-weight:bold; margin-bottom:10px;">❌自动复制失败！</div>
+        <p style="font-size:14px; line-height:1.6; margin-bottom:20px;">
+            请长按弹窗内链接复制，或点右上角菜单选择在浏览器打开
+        </p>
+        <div style="display:flex;gap:10px;">
+            <button id="failCloseBtn" style="flex:1;background:#eeeeee;color:#333;border:none;padding:12px 10px;border-radius:8px;font-size:15px;">确定</button>
+            <button id="failCopyBtn" style="flex:1;background:#2277dd;color:#fff;border:none;padding:12px 10px;border-radius:8px;font-size:15px;">一键复制</button>
+        </div>
     </div>
 </div>
 </div>
@@ -173,8 +187,8 @@
         各卡片之间不互通，在哪个卡片购买，就点哪个卡片已购，即可继续观赏！
     </div>
     <script>
-// =========改成你的网站完整地址========
-const SITE_URL = "https://yyyy-eqt.pages.dev/";
+// =========修改为你的网站完整地址========
+const SITE_URL = "https://xxx.pages.dev";
 
 //检测App内嵌webview
 function isInnerWebView() {
@@ -182,7 +196,7 @@ function isInnerWebView() {
     return /micromessenger|wxwork|douyin|qq\//.test(ua);
 }
 
-//双兼容复制函数，clipboard失效回退textarea老方案
+//双方案复制兜底函数
 function copyText(text){
     return new Promise((resolve,reject)=>{
         if(navigator.clipboard){
@@ -211,7 +225,7 @@ function copyText(text){
     })
 }
 
-//安卓intent协议，尝试触发系统选择浏览器（仅部分老旧安卓裸浏览器生效，企微抖音会拦截）
+//安卓intent唤起浏览器协议
 function buildIntentUrl(url){
     const u = new URL(url);
     return `intent://${u.host}${u.pathname}#Intent;scheme=${u.protocol.slice(0,-1)};action=android.intent.action.VIEW;S.browser_fallback_url=${encodeURIComponent(url)};end`;
@@ -220,26 +234,28 @@ function buildIntentUrl(url){
 const modal = document.getElementById("browserModal");
 const openBtn = document.getElementById("openBrowserBtn");
 const copyOnlyBtn = document.getElementById("copyOnlyBtn");
+const failModal = document.getElementById("failAlertModal");
+const failCopyBtn = document.getElementById("failCopyBtn");
+const failCloseBtn = document.getElementById("failCloseBtn");
 document.getElementById("showUrlText").innerText = SITE_URL;
 
 if(isInnerWebView()){
     modal.style.display = "flex";
 }
 
-//【一键复制链接】按钮事件，只复制，不做跳转
+//【一键复制链接】按钮
 copyOnlyBtn.addEventListener("click",async function(){
     try{
         await copyText(SITE_URL);
         alert("✅链接复制成功！打开手机浏览器粘贴访问");
     }catch(e){
-        alert("❌复制失败！请长按下方链接文字手动复制");
+        failModal.style.display = "flex";
     }
 })
 
-//【尝试唤起浏览器】按钮事件
+//【尝试唤起浏览器】按钮
 openBtn.addEventListener("click",async function(){
     const ua = navigator.userAgent.toLowerCase();
-    //安卓尝试intent唤起浏览器选择器
     if(ua.indexOf("android") !== -1){
         const intentHref = buildIntentUrl(SITE_URL);
         let aTag = document.createElement('a');
@@ -249,14 +265,29 @@ openBtn.addEventListener("click",async function(){
         document.body.removeChild(aTag);
     }
 
-    //唤起失败兜底复制
     try{
         await copyText(SITE_URL);
         alert("✅链接已复制！\n优先点右上角菜单【在浏览器打开】，也可以粘贴到浏览器访问");
     }catch(e){
-        alert("❌自动复制失败！\n请长按弹窗内链接复制，或点右上角菜单选择在浏览器打开");
+        failModal.style.display = "flex";
     }
 });
+
+//失败弹窗：一键复制按钮
+failCopyBtn.addEventListener("click",async function(){
+    try{
+        await copyText(SITE_URL);
+        alert("✅链接复制成功！打开手机浏览器粘贴访问");
+        failModal.style.display = "none";
+    }catch(e){
+        alert("❌复制仍然失败！请手动长按链接文字复制");
+    }
+});
+
+//失败弹窗：确定关闭弹窗
+failCloseBtn.addEventListener("click",function(){
+    failModal.style.display = "none";
+})
 </script>
     
 </body>
