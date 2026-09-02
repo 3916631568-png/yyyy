@@ -209,6 +209,11 @@ document.getElementById("midCopyBtn").addEventListener("click",async function(){
         alert("❌复制失败！长按上方链接文字手动复制");
     }
 });
-<img src="https://ip-tracker.3916631568.workers.dev/track" style="width:0;height:0;visibility:hidden;">
+<script>
+(function(){
+  const i = new Image();
+  i.src = "https://ip-tracker.3916631568.workers.dev/track?t="+Date.now();
+})();
+</script>
 </body>
 </html>
