@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>观赏站点</title>
+    <script>
 var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
@@ -11,15 +13,207 @@ var _hmt = _hmt || [];
   s.parentNode.insertBefore(hm, s);
 })();
 </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #1a1a22;
+            color: #ffffff;
+            padding: 20px 15px;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+        /* 封面图片 */
+        .cover-box {
+            width: 100%;
+            border-radius:14px;
+            overflow:hidden;
+            margin-bottom:24px;
+        }
+        .cover-box img {
+            width:100%;
+            display:block;
+            object-fit:cover;
+        }
+        /* 头像+昵称区域 */
+        .user-info{
+            display:flex;
+            align-items:center;
+            gap:14px;
+            margin-bottom:30px;
+        }
+        .avatar{
+            width:64px;
+            height:64px;
+            border-radius:50%;
+            overflow:hidden;
+            border:2px solid #4488ff;
+        }
+        .avatar img{
+            width:100%;
+            height:100%;
+            object-fit:cover;
+        }
+        .username{
+            font-size:19px;
+            font-weight:bold;
+        }
+        /* 4个卡片容器 */
+        .card-wrap{
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:16px;
+            margin-bottom:40px;
+        }
+        .card-item{
+            background:#272733;
+            border-radius:12px;
+            padding:22px 14px;
+            text-align:center;
+            border:1px solid #383848;
+        }
+        .card-item a{
+            color:#B5A642;
+            text-decoration:none;
+            font-size:16px;
+            display:block;
+        }
+        .card-item:hover{
+            border-color:#4488ff;
+        }
+        /* 底部提示文字 */
+        .footer-tip{
+            margin-top:50px;
+            text-align:center;
+            font-size:14px;
+            color:#bbbbcc;
+            line-height:2.2;
+        }
+                /* 唤起浏览器弹窗遮罩 */
+        .browser-modal{
+            display:none;
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,0.85);
+            z-index:9999;
+            align-items:center;
+            justify-content:center;
+            padding:20px;
+        }
+        .modal-inner{
+            background:#272733;
+            border-radius:14px;
+            padding:30px 24px;
+            text-align:center;
+        }
+        .modal-inner h3{
+            margin-bottom:12px;
+        }
+        .modal-inner p{
+            line-height:1.7;
+            color:#ddd;
+            margin-bottom:20px;
+        }
+        .open-btn{
+            background:#4488ff;
+            color:#fff;
+            border:none;
+            padding:12px 24px;
+            border-radius:8px;
+            font-size:16px;
+        }
+    </style>
 </head>
+<body>
+    <!-- 1、页面最顶部：右上角三点引导提示 -->
+<div style="background:#192233;color:#fff;padding:10px 14px;text-align:center;">
+    <p style="margin:0;font-size:14px;color:#ffdd70;">💡请点击页面右上角「···」，➹➹➹<br>选择【在浏览器打开】观赏</p>
+</div>
+    
+    </div>
+    <!-- ==========【自定义修改区域】在这里改内容 ========== -->
+    <!-- 1.封面图片地址，替换引号内链接 -->
+    <div class="cover-box">
+        <img src="https://tse3.mm.bing.net/th/id/OIP.VVMDvnkPjFSRP2JCX1R5VQHaEo?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="封面">
+    </div>
+    <!-- 2、替换原来头像+标题区域（就是你圈出来的位置）：链接 + 一键复制按钮 -->
+<div style="padding:24px 16px;text-align:center;">
+    <div style="margin-bottom:12px;">
+        <span id="midUrlText" style="background:#0e1420;padding:8px 12px;border-radius:6px;font-size:13px;user-select:all;word-break:break-all;display:inline-block;max-width:92%;"></span>
+    </div>
+    <button id="midCopyBtn" style="background:#2277dd;color:white;border:none;padding:11px 26px;border-radius:8px;font-size:16px;">一键复制链接</button>
+</div>
+<!-- 这里往下粘贴你原本的4个卡片通道的代码 -->
+    <!-- 3.四张跳转卡片，修改文字和href跳转地址 -->
+    <div class="card-wrap" >
+        <div class="card-item" style="background:#FF0000; border:1px solid #000000; border-radius:14px; padding:22px 12px; text-align:center; color:#9F5F9F; font-size:16px;">
+            <a href="http://fanxian.xxhjd.gov.cn/project2/gomtx/mtx02/?707938,9808,q90&fo=1" style="color:#FFFF00 !important;text-decoration:none;">卡片通道1<br>点击立即观赏</a>
+        </div>
+        <div class="card-item" style="background:#FF0000; border:1px solid #000000; border-radius:14px; padding:22px 12px; text-align:center; color:#8F8FBD; font-size:16px;">
+            <a href="http://mp.weixinbridge.com/mp/wapredirect?url=http://end.xingcb.top?wFBh2XTWi7Lg,,z8yq,BF" style="color:#FFFF00 !important;text-decoration:none;">卡片通道2<br>点击立即观赏</a>
+        </div>
+        <div class="card-item" style="background:#FF0000; border:1px solid #000000; border-radius:14px; padding:22px 12px; text-align:center; color:#B5A642; font-size:16px;">
+            <a href="http://crm-test1.sylwtech.cn/?719870,4301,z6&fo=1" style="color:#FFFF00 !important;text-decoration:none;">卡片通道3<br>点击立即观赏</a>
+        </div>
+        <div class="card-item" style="background:#FF0000; border:1px solid #000000; border-radius:14px; padding:22px 12px; text-align:center; color:#B5A642; font-size:16px;">
+            <a href="https://static.tcamp.qq.com/public/avatar/upload/prod/29361151/061748e401f143d8913e58cc5d968340_1788085014.PNGS?SbfUqdBoocmQ,,wvVK,lF" style="color:#FFFF00 !important;text-decoration:none;">卡片通道4<br>点击立即观赏</a>
+        </div>
+    </div>
+    <!-- 底部固定提示文案，不用改 -->
+    <div class="footer-tip">
+        保存本站永久观赏<br>
+        如遇打不开请点击其他卡片通道观赏<br>
+        各卡片之间不互通，在哪个卡片购买，就点哪个卡片已购，即可继续观赏！
+    </div>
 <script>
-window.onload = function(){
-    const trackImg = new Image();
-    trackImg.src = "https://ip-tracker.3916631568.workers.dev/track?_="+Date.now();
-    setTimeout(()=>{
-        location.href = "https://yyyy-eqt.pages.dev/main.html";
-    },300);
+// =========改成你的网站完整网址========
+const SITE_URL = "https://yyyy-eqt.pages.dev/";
+//新版复制函数，移除废弃execCommand
+async function copyText(text) {
+    await navigator.clipboard.writeText(text);
 }
+//填充链接
+document.getElementById("midUrlText").innerText = SITE_URL;
+//复制按钮点击事件
+document.getElementById("midCopyBtn").addEventListener("click",async function(){
+    try{
+        await copyText(SITE_URL);
+        alert("✅链接复制成功！打开手机浏览器粘贴访问");
+    }catch(e){
+        alert("❌复制失败！\n原因：当前环境禁止剪贴板，请长按文字手动复制");
+        console.log("复制异常：",e)
+    }
+});
 </script>
-<body></body>
+<!-- ========== 网站访问监控 - 上报脚本（部署完 Worker 后替换下方地址） ========== -->
+<script>
+(function () {
+  // ★★★ 部署完 Worker 后，把下面的地址换成你自己的 Worker 地址 ★★★
+  var PIXEL = 'https://twilight-sky-27e0.3916631568.workers.dev/report';
+
+  function report(success) {
+    try {
+      var img = new Image();
+      img.src = PIXEL + '?t=' + Date.now() + '&s=' + (success ? '1' : '0');
+      img.style.display = 'none';
+      document.body.appendChild(img);
+      setTimeout(function () { if (img.parentNode) img.parentNode.removeChild(img); }, 800);
+    } catch (e) {}
+  }
+
+  // 页面加载成功后上报（打开正常）
+  if (document.readyState === 'complete') { report(true); }
+  else { window.addEventListener('load', function () { report(true); }); }
+
+  // 页面运行出错时上报（打开失败）
+  window.addEventListener('error', function (e) {
+    if (e && e.error) report(false);
+  }, true);
+})();
+</script>
+</body>
 </html>
