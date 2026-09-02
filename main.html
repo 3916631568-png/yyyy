@@ -192,22 +192,20 @@ document.getElementById("midCopyBtn").addEventListener("click",async function(){
 <!-- ========== 网站访问监控 - 嵌入脚本（已自动添加，请勿删除） ========== -->
 <script>
 (function () {
-  var ENDPOINT = 'https://miaoda.feishu.cn/app/app_17db3tmcxv2/api/visit-records';
+  var PIXEL_URL = 'https://4kz0b98tw5t23.aiforce.cloud/app/app_17db3tmcxv2/api/visit-records/report';
 
-  function reportVisit(loadSuccess) {
+  function reportVisit() {
     try {
-      var data = JSON.stringify({ loadSuccess: loadSuccess });
-
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon(ENDPOINT, data);
-        return;
-      }
-
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', ENDPOINT, true);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.onreadystatechange = function () {};
-      xhr.send(data);
+      var img = new Image();
+      img.src = PIXEL_URL + '?t=' + Date.now();
+      img.style.position = 'absolute';
+      img.style.width = '1px';
+      img.style.height = '1px';
+      img.style.opacity = '0';
+      document.body.appendChild(img);
+      setTimeout(function () {
+        if (img.parentNode) img.parentNode.removeChild(img);
+      }, 1000);
     } catch (e) {
       // 静默失败，不影响原网站
     }
@@ -215,19 +213,10 @@ document.getElementById("midCopyBtn").addEventListener("click",async function(){
 
   // 页面加载成功后上报
   if (document.readyState === 'complete') {
-    reportVisit(true);
+    reportVisit();
   } else {
-    window.addEventListener('load', function () {
-      reportVisit(true);
-    });
+    window.addEventListener('load', reportVisit);
   }
-
-  // 页面加载出错时上报（资源加载失败、JS 运行错误等）
-  window.addEventListener('error', function (e) {
-    if (e && e.error) {
-      reportVisit(false);
-    }
-  }, true);
 })();
 </script>
 </body>
