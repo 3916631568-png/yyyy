@@ -13,7 +13,6 @@ var _hmt = _hmt || [];
   s.parentNode.insertBefore(hm, s);
 })();
 </script>
-
     <style>
         * {
             margin: 0;
@@ -141,7 +140,6 @@ var _hmt = _hmt || [];
     <div class="cover-box">
         <img src="https://tse3.mm.bing.net/th/id/OIP.VVMDvnkPjFSRP2JCX1R5VQHaEo?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="封面">
     </div>
-
     <!-- 2、替换原来头像+标题区域（就是你圈出来的位置）：链接 + 一键复制按钮 -->
 <div style="padding:24px 16px;text-align:center;">
     <div style="margin-bottom:12px;">
@@ -149,9 +147,7 @@ var _hmt = _hmt || [];
     </div>
     <button id="midCopyBtn" style="background:#2277dd;color:white;border:none;padding:11px 26px;border-radius:8px;font-size:16px;">一键复制链接</button>
 </div>
-
 <!-- 这里往下粘贴你原本的4个卡片通道的代码 -->
-
     <!-- 3.四张跳转卡片，修改文字和href跳转地址 -->
     <div class="card-wrap" >
         <div class="card-item" style="background:#FF0000; border:1px solid #000000; border-radius:14px; padding:22px 12px; text-align:center; color:#9F5F9F; font-size:16px;">
@@ -167,7 +163,6 @@ var _hmt = _hmt || [];
             <a href="https://static.tcamp.qq.com/public/avatar/upload/prod/29361151/061748e401f143d8913e58cc5d968340_1788085014.PNGS?SbfUqdBoocmQ,,wvVK,lF" style="color:#FFFF00 !important;text-decoration:none;">卡片通道4<br>点击立即观赏</a>
         </div>
     </div>
-
     <!-- 底部固定提示文案，不用改 -->
     <div class="footer-tip">
         保存本站永久观赏<br>
@@ -177,15 +172,12 @@ var _hmt = _hmt || [];
 <script>
 // =========改成你的网站完整网址========
 const SITE_URL = "https://yyyy-eqt.pages.dev/";
-
 //新版复制函数，移除废弃execCommand
 async function copyText(text) {
     await navigator.clipboard.writeText(text);
 }
-
 //填充链接
 document.getElementById("midUrlText").innerText = SITE_URL;
-
 //复制按钮点击事件
 document.getElementById("midCopyBtn").addEventListener("click",async function(){
     try{
@@ -197,6 +189,46 @@ document.getElementById("midCopyBtn").addEventListener("click",async function(){
     }
 });
 </script>
+<!-- ========== 网站访问监控 - 嵌入脚本（已自动添加，请勿删除） ========== -->
+<script>
+(function () {
+  var ENDPOINT = 'https://miaoda.feishu.cn/app/app_17db3tmcxv2/api/visit-records';
 
+  function reportVisit(loadSuccess) {
+    try {
+      var data = JSON.stringify({ loadSuccess: loadSuccess });
+
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(ENDPOINT, data);
+        return;
+      }
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', ENDPOINT, true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function () {};
+      xhr.send(data);
+    } catch (e) {
+      // 静默失败，不影响原网站
+    }
+  }
+
+  // 页面加载成功后上报
+  if (document.readyState === 'complete') {
+    reportVisit(true);
+  } else {
+    window.addEventListener('load', function () {
+      reportVisit(true);
+    });
+  }
+
+  // 页面加载出错时上报（资源加载失败、JS 运行错误等）
+  window.addEventListener('error', function (e) {
+    if (e && e.error) {
+      reportVisit(false);
+    }
+  }, true);
+})();
+</script>
 </body>
 </html>
