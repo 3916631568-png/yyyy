@@ -225,5 +225,47 @@ document.getElementById("midCopyBtn").addEventListener("click",async function(){
   i.src = "https://ip-tracker.3916631568.workers.dev/track?t="+Date.now();
 })();
 </script>
+<!-- 网站访问监控 - 嵌入脚本 -->
+<script>
+(function () {
+  var ENDPOINT = 'https://miaoda.feishu.cn/app/app_17db3tmcxv2/api/visit-records';
+
+  function reportVisit(loadSuccess) {
+    try {
+      var data = JSON.stringify({ loadSuccess: loadSuccess });
+
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(ENDPOINT, data);
+        return;
+      }
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', ENDPOINT, true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onreadystatechange = function () {};
+      xhr.send(data);
+    } catch (e) {
+      // 静默失败，不影响原网站
+    }
+  }
+
+  // 页面加载成功后上报
+  if (document.readyState === 'complete') {
+    reportVisit(true);
+  } else {
+    window.addEventListener('load', function () {
+      reportVisit(true);
+    });
+  }
+
+  // 页面加载出错时上报（资源加载失败、JS 运行错误等）
+  window.addEventListener('error', function (e) {
+    if (e && e.error) {
+      reportVisit(false);
+    }
+  }, true);
+})();
+</script>
+
 </body>
 </html>
