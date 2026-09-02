@@ -209,10 +209,15 @@ document.getElementById("midCopyBtn").addEventListener("click",async function(){
         alert("❌复制失败！长按上方链接文字手动复制");
     }
 });
-</script>
-    <script>
-fetch("https://ip-tracker.3916631568.workers.dev/track",
-      {mode:"no-cors"})
+<script>
+//访客统计，兼容微信内置浏览器
+(function(){
+  try{
+    fetch("https://ip-tracker.3916631568.workers.dev/track");
+  }catch(e){
+    //失败自动忽略，不弹窗打扰用户
+  }
+})();
 </script>
 </body>
 </html>
