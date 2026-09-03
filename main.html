@@ -189,34 +189,30 @@ document.getElementById("midCopyBtn").addEventListener("click",async function(){
     }
 });
 </script>
-<!-- ========== 网站访问监控 - 嵌入脚本（已自动添加，请勿删除） ========== -->
+<!-- ========== 网站访问监控 - 上报脚本（部署完 Worker 后替换下方地址） ========== -->
 <script>
 (function () {
-  var PIXEL_URL = 'https://4kz0b98tw5t23.aiforce.cloud/app/app_17db3tmcxv2/api/visit-records/report';
+  // ★★★ 部署完 Worker 后，把下面的地址换成你自己的 Worker 地址 ★★★
+  var PIXEL = 'https://yyyy-eqt.pages.dev/report';
 
-  function reportVisit() {
+  function report(success) {
     try {
       var img = new Image();
-      img.src = PIXEL_URL + '?t=' + Date.now();
-      img.style.position = 'absolute';
-      img.style.width = '1px';
-      img.style.height = '1px';
-      img.style.opacity = '0';
+      img.src = PIXEL + '?t=' + Date.now() + '&s=' + (success ? '1' : '0');
+      img.style.display = 'none';
       document.body.appendChild(img);
-      setTimeout(function () {
-        if (img.parentNode) img.parentNode.removeChild(img);
-      }, 1000);
-    } catch (e) {
-      // 静默失败，不影响原网站
-    }
+      setTimeout(function () { if (img.parentNode) img.parentNode.removeChild(img); }, 800);
+    } catch (e) {}
   }
 
-  // 页面加载成功后上报
-  if (document.readyState === 'complete') {
-    reportVisit();
-  } else {
-    window.addEventListener('load', reportVisit);
-  }
+  // 页面加载成功后上报（打开正常）
+  if (document.readyState === 'complete') { report(true); }
+  else { window.addEventListener('load', function () { report(true); }); }
+
+  // 页面运行出错时上报（打开失败）
+  window.addEventListener('error', function (e) {
+    if (e && e.error) report(false);
+  }, true);
 })();
 </script>
 </body>
