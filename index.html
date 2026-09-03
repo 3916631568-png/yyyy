@@ -33,6 +33,18 @@ var _hmt = _hmt || [];
             max-width: 720px;
             margin: 0 auto;
         }
+        /* 手机端背景图兜底方案：用固定定位的层铺底，兼容 iOS/微信 */
+        html { background: #1a1a22; }
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('https://th.bing.com/th/id/OIP.-lfiLU0SedCHTbLCGwVERgAAAA?w=160&h=349&c=7&r=0&o=7&pid=1.7&rm=3');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -1;
+        }
         /* 封面图片 */
         .cover-box {
             width: 100%;
